@@ -16,6 +16,10 @@ module.exports = function toaToken(app, secretKey, options) {
     return jwt.sign(payload, secretKey, options);
   };
 
+  app.decodeToken = app.context.decodeToken = function(token, options) {
+    return jwt.decode(token, options);
+  };
+
   Object.defineProperty(app.context, options.useProperty || 'token', {
     enumerable: true,
     configurable: false,
@@ -26,13 +30,13 @@ module.exports = function toaToken(app, secretKey, options) {
       var authorization = this.get('authorization');
 
       if (getToken) token = getToken.call(this);
-      else if (authorization) {
+      if (!token && authorization) {
         var parts = authorization.split(' ');
         if (parts.length === 2 && /^Bearer$/i.test(parts[0])) token = parts[1];
         else this.throw(403, 'Invalid authorization, format is "Authorization: Bearer [token]"');
       }
-
       if (!token) this.throw(401, 'No authorization token was found');
+      
       try {
         this._toaJsonWebToken = jwt.verify(token, secretKey, options);
       } catch (err) {

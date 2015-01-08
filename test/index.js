@@ -21,7 +21,7 @@ describe('toa-token', function() {
     toaToken(app, 'secretKeyxxx');
     var token = app.signToken(user);
 
-    assert.deepEqual(toaToken.jwt.decode(token), user);
+    assert.deepEqual(app.decodeToken(token), user);
 
     request(app.listen())
       .get('/')

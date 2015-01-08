@@ -66,7 +66,7 @@ var toaToken = require('toa-token');
 - `secretKey`: `secretKey` is a string or buffer containing either the secret for HMAC algorithms, or the PEM encoded private key for RSA and ECDSA.
 
 - `options.useProperty`: `String`, token name add to `context`, default to `token`.
-- `options.getToken`: `Function`, A custom function for extracting the token, This is useful if you need to pass the token through a query parameter or a cookie..
+- `options.getToken`: `Function`, A custom function for extracting the token, This is useful if you need to pass the token through a query parameter or a cookie.
 - `options.algorithm`
 - `options.expiresInMinutes`
 - `options.audience`
@@ -88,6 +88,13 @@ console.log(this.token);
 
 Generate a token string. `payload` could be an literal, buffer or string, If `payload` is not a buffer or a string, it will be coerced into a string
 using `JSON.stringify`.
+
+### app.decodeToken(token, options) / context.decodeToken(token, options)
+
+Returns the decoded payload without verifying if the signature is valid.
+
+- `token`: `String`, the JsonWebToken string.
+- `options.json`: `Boolean`, force JSON.parse on the payload even if the header doesn't contain `"typ":"JWT"`.
 
 ## Licences
 (The MIT License)
