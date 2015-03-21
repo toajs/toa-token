@@ -65,6 +65,7 @@ var toaToken = require('toa-token');
 
 - `secretKey`: `secretKey` is a string or buffer containing either the secret for HMAC algorithms, or the PEM encoded private key for RSA and ECDSA.
 
+- `options.authScheme`: `String`, Authorization scheme name, default to `Bearer`. In HTTP header fields: `Authorization: Bearer QWxhZGRpbjpvcGVuIHNld2FtZQ==`.
 - `options.useProperty`: `String`, token name add to `context`, default to `token`.
 - `options.getToken`: `Function`, A custom function for extracting the token, This is useful if you need to pass the token through a query parameter or a cookie.
 - `options.algorithm`
@@ -74,7 +75,7 @@ var toaToken = require('toa-token');
 - `options.issuer`
 - `options.noTimestamp`
 
-Other options is same as [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+**More options is same as [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)**
 
 ### context.token
 

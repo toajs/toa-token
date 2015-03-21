@@ -4,7 +4,7 @@
   "authors": [
     "Yan Qing <admin@zensh.com>"
   ],
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -29,16 +29,16 @@
     "oauth"
   ],
   "dependencies": {
-    "jsonwebtoken": "^3.2.0"
+    "jsonwebtoken": "^4.2.1"
   },
   "devDependencies": {
-    "gulp": ">=3.8.0",
-    "gulp-jshint": ">=1.8.4",
-    "gulp-mocha": ">=1.0.0",
-    "gulp-sequence": ">=0.3.0",
-    "mocha": ">=1.21.0",
-    "supertest": ">=0.15.0",
-    "toa": ">=0.6.4"
+    "gulp": "^3.8.11",
+    "gulp-jshint": "^1.9.4",
+    "gulp-mocha": "^2.0.0",
+    "gulp-sequence": "^0.3.2",
+    "mocha": "^2.2.1",
+    "supertest": "^0.15.0",
+    "toa": "^0.7.2"
   },
   "scripts": {
     "test": "gulp test"
