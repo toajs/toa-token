@@ -5,8 +5,9 @@
 
 var jwt = require('jsonwebtoken');
 
-module.exports = function toaToken(app, secretKey, options) {
-  if (!secretKey) throw new Error('secretKey should be set');
+module.exports = function toaToken(app, secretOrPrivateKeys, options) {
+  if (!secretOrPrivateKeys || !secretOrPrivateKeys.length) throw new Error('secretOrPrivateKey should be set');
+  if (!Array.isArray(secretOrPrivateKeys)) secretOrPrivateKeys = [secretOrPrivateKeys];
   options = options || {};
 
   var useProperty = options.useProperty || 'token';
@@ -17,7 +18,7 @@ module.exports = function toaToken(app, secretKey, options) {
 
 
   app.signToken = app.context.signToken = function(payload) {
-    return jwt.sign(payload, secretKey, options);
+    return jwt.sign(payload, secretOrPrivateKeys[0], options);
   };
 
   app.decodeToken = app.context.decodeToken = function(token, options) {
@@ -40,10 +41,13 @@ module.exports = function toaToken(app, secretKey, options) {
       }
       if (!token) this.throw(401, 'No authorization token was found');
 
-      try {
-        this._toaJsonWebToken = jwt.verify(token, secretKey, options);
-      } catch (err) {
-        this.throw(403, err.toString());
+      for (var i = 0, len = secretOrPrivateKeys.length - 1; i <= len ; i++) {
+        try {
+          this._toaJsonWebToken = jwt.verify(token, secretOrPrivateKeys[i], options);
+          break;
+        } catch (err) {
+          if (i === len) this.throw(403, err.toString());
+        }
       }
       return this._toaJsonWebToken;
     }

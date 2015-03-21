@@ -96,6 +96,79 @@ describe('toa-token', function() {
       .end(done);
   });
 
+  it('should verify token success with options.authScheme', function(done) {
+    var user = {_id: 123, name: 'toa'};
+
+    var app = Toa(function(Thunk) {
+      assert.deepEqual(this.token, user);
+      this.body = this.token;
+    });
+
+    toaToken(app, 'secretKeyxxx', {
+      authScheme: 'Basic'
+    });
+    var token = app.signToken(user);
+
+    request(app.listen())
+      .get('/')
+      .set('Authorization', 'Basic ' + token)
+      .expect(200)
+      .end(done);
+  });
+
+  it('should verify token success through a rotating credential system', function(done) {
+    var user = {_id: 123, name: 'toa'};
+
+    var app = Toa(function(Thunk) {
+      assert.deepEqual(this.token, user);
+      this.body = this.token;
+    });
+
+    toaToken(app, ['secretKeyA', 'secretKeyB', 'secretKeyC']);
+    var token = app.signToken(user);
+
+    request(app.listen())
+      .get('/')
+      .set('Authorization', 'Bearer ' + token)
+      .expect(200)
+      .end(done);
+  });
+
+  it('should verify old token success through a rotating credential system', function(done) {
+    var user = {_id: 123, name: 'toa'};
+
+    var app = Toa(function(Thunk) {
+      assert.deepEqual(this.token, user);
+      this.body = this.token;
+    });
+
+    toaToken(app, ['secretKeyA', 'secretKeyB', 'secretKeyC']);
+    var token = toaToken.jwt.sign(user, 'secretKeyC');
+
+    request(app.listen())
+      .get('/')
+      .set('Authorization', 'Bearer ' + token)
+      .expect(200)
+      .end(done);
+  });
+
+  it('should verify invalid token fail through a rotating credential system', function(done) {
+    var user = {_id: 123, name: 'toa'};
+
+    var app = Toa(function(Thunk) {
+      this.body = this.token;
+    });
+
+    toaToken(app, ['secretKeyA', 'secretKeyB', 'secretKeyC']);
+    var token = toaToken.jwt.sign(user, 'secretKeyD');
+
+    request(app.listen())
+      .get('/')
+      .set('Authorization', 'Bearer ' + token)
+      .expect(403)
+      .end(done);
+  });
+
   it('should throw error with 401', function(done) {
     var user = {_id: 123, name: 'toa'};
 

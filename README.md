@@ -1,6 +1,8 @@
 toa-token
 ====
-Json web token (JWT) module for toa..
+Json web token (JWT) module for toa.
+
+It sign and verify token through a rotating credential system, in which new server keys can be added and old ones removed regularly, without invalidating client credentials.
 
 [![NPM version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
@@ -61,9 +63,9 @@ npm install toa-token
 ```js
 var toaToken = require('toa-token');
 ```
-### toaToken(app, secretKey, [options]))
+### toaToken(app, secretOrPrivateKeys, [options]))
 
-- `secretKey`: `secretKey` is a string or buffer containing either the secret for HMAC algorithms, or the PEM encoded private key for RSA and ECDSA.
+- `secretOrPrivateKeys`: `secretOrPrivateKeys` is a array of string or buffer containing either the secret for HMAC algorithms, or the PEM encoded private key for RSA and ECDSA.
 
 - `options.authScheme`: `String`, Authorization scheme name, default to `Bearer`. In HTTP header fields: `Authorization: Bearer QWxhZGRpbjpvcGVuIHNld2FtZQ==`.
 - `options.useProperty`: `String`, token name add to `context`, default to `token`.
