@@ -37,7 +37,7 @@ module.exports = function toaToken(app, secretOrPrivateKeys, options) {
       if (getToken) token = getToken.call(this);
       if (!token && authorization) {
         if (authReg.test(authorization)) token = authorization.replace(authReg, '').trim();
-        if (!token) this.throw(403, 'Invalid authorization, format is "Authorization: ' + authScheme + ' tokenXXX"');
+        if (!token) this.throw(401, 'Invalid authorization');
       }
       if (!token) this.throw(401, 'No authorization token was found');
 
@@ -46,7 +46,7 @@ module.exports = function toaToken(app, secretOrPrivateKeys, options) {
           this._toaJsonWebToken = jwt.verify(token, secretOrPrivateKeys[i], options);
           break;
         } catch (err) {
-          if (i === len) this.throw(403, err.toString());
+          if (i === len) this.throw(401, err.toString());
         }
       }
       return this._toaJsonWebToken;

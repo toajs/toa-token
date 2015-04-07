@@ -165,7 +165,7 @@ describe('toa-token', function() {
     request(app.listen())
       .get('/')
       .set('Authorization', 'Bearer ' + token)
-      .expect(403)
+      .expect(401)
       .end(done);
   });
 
@@ -201,7 +201,7 @@ describe('toa-token', function() {
     request(app.listen())
       .get('/')
       .set('Authorization', 'Bearer ' + token + 1)
-      .expect(403)
+      .expect(401)
       .end(done);
   });
 });
