@@ -99,6 +99,12 @@ Returns the decoded payload without verifying if the signature is valid.
 - `token`: `String`, the JsonWebToken string.
 - `options.json`: `Boolean`, force JSON.parse on the payload even if the header doesn't contain `"typ":"JWT"`.
 
+### app.verifyToken(token, options) / context.verifyToken(token, options)
+
+Returns the decoded payload with verifying if the signature is valid.
+
+- `token`: `String`, the JsonWebToken string.
+
 ## Licences
 (The MIT License)
 
