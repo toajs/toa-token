@@ -18,38 +18,39 @@ often issued using OpenID Connect.
 ## Demo
 
 ```js
-var Toa = require('toa');
-var toaToken = require('toa-token');
-var Router = require('toa-router');
-var bodyParser = require('toa-body')();
+var Toa = require('toa')
+var toaToken = require('toa-token')
+var Router = require('toa-router')
+var toaBody = require('toa-body')
 
-var router = new Router();
+var router = new Router()
 
 router
-.get('/auth', function*(Thunk) {
-  var user = yield bodyParser(this.request, Thunk);
-  // verify with user.name and user.passwd, get user._id
-  var token = this.signToken({
-    name: user.name,
-    _id: user._id
-  });
-  this.body = token;
+  .get('/auth', function * () {
+    var user = yield this.parseBody()
+    // verify with user.name and user.passwd, get user._id
+    var token = this.signToken({
+      name: user.name,
+      _id: user._id
+    })
+    this.body = token
+  })
+  .get('/', function (Thunk) {
+    // should have this.token when client request with authorization header.
+    // var token = this.token // {_id: 'user id', name: 'user name'}
+    // ....
+  })
+
+var app = Toa(function * () {
+  yield router.route(this)
 })
-.get('/', function(Thunk) {
-  // should have this.token when client request with authorization header.
-  var token = this.token; // {_id: 'user id', name: 'user name'}
-  // ....
-});
 
-var app = Toa(function(Thunk) {
-  return router.route(this, Thunk);
-});
-
+toaBody(app)
 toaToken(app, 'secretKeyxxx', {
   expiresInMinutes: 60
-});
+})
 
-app.listen(3000);
+app.listen(3000)
 ```
 
 ## Installation
@@ -61,7 +62,7 @@ npm install toa-token
 ## API
 
 ```js
-var toaToken = require('toa-token');
+var toaToken = require('toa-token')
 ```
 ### toaToken(app, secretOrPrivateKeys, [options]))
 
@@ -84,7 +85,7 @@ var toaToken = require('toa-token');
 This is a getter that auto verify the token. if authorization is invalid, context will throw error. `token` maybe custom by `options.useProperty`.
 
 ```js
-console.log(this.token);
+console.log(this.token)
 ```
 
 ### app.signToken(payload) / context.signToken(payload)
