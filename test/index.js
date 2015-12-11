@@ -11,7 +11,7 @@ var Toa = require('toa')
 var toaToken = require('../')
 
 describe('toa-token', function () {
-  it('should verify token success', function (done) {
+  it('should verify token success', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -23,14 +23,13 @@ describe('toa-token', function () {
 
     assert.deepEqual(app.decodeToken(token), user)
 
-    request(app.listen())
+    return request(app.listen())
       .get('/')
       .set('Authorization', 'Bearer ' + token)
       .expect(token)
-      .end(done)
   })
 
-  it('should verify token success with options', function (done) {
+  it('should verify token success with options', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -47,14 +46,13 @@ describe('toa-token', function () {
 
     var token = app.signToken(user)
 
-    request(app.listen())
+    return request(app.listen())
       .get('/')
       .set('Authorization', 'Bearer ' + token)
       .expect(token)
-      .end(done)
   })
 
-  it('should verify token success with options.useProperty', function (done) {
+  it('should verify token success with options.useProperty', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -66,14 +64,13 @@ describe('toa-token', function () {
     })
     var token = app.signToken(user)
 
-    request(app.listen())
+    return request(app.listen())
       .get('/')
       .set('Authorization', 'Bearer ' + token)
       .expect(200)
-      .end(done)
   })
 
-  it('should verify token success with options.getToken', function (done) {
+  it('should verify token success with options.getToken', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -89,14 +86,13 @@ describe('toa-token', function () {
     })
     var token = app.signToken(user)
 
-    request(app.listen())
+    return request(app.listen())
       .get('/')
       .set('Authorization', 'Bearer ' + token)
       .expect(200)
-      .end(done)
   })
 
-  it('should verify token success with options.authScheme', function (done) {
+  it('should verify token success with options.authScheme', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -109,14 +105,13 @@ describe('toa-token', function () {
     })
     var token = app.signToken(user)
 
-    request(app.listen())
+    return request(app.listen())
       .get('/')
       .set('Authorization', 'Basic ' + token)
       .expect(200)
-      .end(done)
   })
 
-  it('should verify token success through a rotating credential system', function (done) {
+  it('should verify token success through a rotating credential system', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -127,14 +122,13 @@ describe('toa-token', function () {
     toaToken(app, ['secretKeyA', 'secretKeyB', 'secretKeyC'])
     var token = app.signToken(user)
 
-    request(app.listen())
+    return request(app.listen())
       .get('/')
       .set('Authorization', 'Bearer ' + token)
       .expect(200)
-      .end(done)
   })
 
-  it('should verify old token success through a rotating credential system', function (done) {
+  it('should verify old token success through a rotating credential system', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -145,14 +139,13 @@ describe('toa-token', function () {
     toaToken(app, ['secretKeyA', 'secretKeyB', 'secretKeyC'])
     var token = toaToken.jwt.sign(user, 'secretKeyC')
 
-    request(app.listen())
+    return request(app.listen())
       .get('/')
       .set('Authorization', 'Bearer ' + token)
       .expect(200)
-      .end(done)
   })
 
-  it('should verify invalid token fail through a rotating credential system', function (done) {
+  it('should verify invalid token fail through a rotating credential system', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -162,27 +155,25 @@ describe('toa-token', function () {
     toaToken(app, ['secretKeyA', 'secretKeyB', 'secretKeyC'])
     var token = toaToken.jwt.sign(user, 'secretKeyD')
 
-    request(app.listen())
+    return request(app.listen())
       .get('/')
       .set('Authorization', 'Bearer ' + token)
       .expect(401)
-      .end(done)
   })
 
-  it('should throw error with 401', function (done) {
+  it('should throw error with 401', function () {
     var app = Toa(function () {
       this.body = this.token
     })
 
     toaToken(app, 'secretKeyxxx')
 
-    request(app.listen())
+    return request(app.listen())
       .get('/')
       .expect(401)
-      .end(done)
   })
 
-  it('should throw error with 403', function (done) {
+  it('should throw error with 403', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -194,10 +185,9 @@ describe('toa-token', function () {
 
     var token = app.signToken(user)
 
-    request(app.listen())
+    return request(app.listen())
       .get('/')
       .set('Authorization', 'Bearer ' + token + 1)
       .expect(401)
-      .end(done)
   })
 })

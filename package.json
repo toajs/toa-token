@@ -4,7 +4,7 @@
   "authors": [
     "Yan Qing <admin@zensh.com>"
   ],
-  "version": "1.2.0",
+  "version": "2.0.0",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -29,26 +29,19 @@
     "oauth"
   ],
   "dependencies": {
-    "jsonwebtoken": "~5.0.1"
+    "jsonwebtoken": "~5.4.1"
   },
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-jshint": "^1.11.0",
-    "gulp-mocha": "^2.1.1",
-    "gulp-sequence": "^0.3.2",
-    "mocha": "^2.2.5",
-    "supertest": "^1.0.1",
-    "standard": "^4.1.0",
-    "toa": "^0.11.2"
+    "mocha": "^2.3.4",
+    "supertest": "^1.1.0",
+    "standard": "^5.4.1",
+    "toa": "^1.2.0"
   },
   "scripts": {
-    "test": "standard && gulp test"
+    "test": "standard && mocha"
   },
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "test",
-    "examples",
-    "gulpfile.js"
+  "files": [
+    "README.md",
+    "index.js"
   ]
 }

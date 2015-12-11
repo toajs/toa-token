@@ -3,26 +3,31 @@
 //
 // **License:** MIT
 
-var jwt = require('jsonwebtoken')
+var jsonwebtoken = require('jsonwebtoken')
 
-module.exports = function toaToken (app, secretOrPrivateKeys, options) {
-  if (!secretOrPrivateKeys || !secretOrPrivateKeys.length) throw new Error('secretOrPrivateKey should be set')
-  if (!Array.isArray(secretOrPrivateKeys)) secretOrPrivateKeys = [secretOrPrivateKeys]
+module.exports = toaToken
+module.exports.jwt = jsonwebtoken
+module.exports.JWT = JWT
+
+function toaToken (app, secretOrPrivateKeys, options) {
   options = options || {}
 
+  var jwt = new JWT(secretOrPrivateKeys)
   var useProperty = options.useProperty || 'token'
   var authScheme = options.authScheme || 'Bearer'
   var getToken = typeof options.getToken === 'function' ? options.getToken : null
   var authReg = new RegExp('^' + authScheme.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
 
-  app.verifyToken = app.context.verifyToken = verifyToken
-
-  app.signToken = app.context.signToken = function (payload) {
-    return jwt.sign(payload, secretOrPrivateKeys[0], options)
+  app.verifyToken = app.context.verifyToken = function (payload, opts) {
+    return jwt.verifyToken(payload, opts || options)
   }
 
-  app.decodeToken = app.context.decodeToken = function (token, options) {
-    return jwt.decode(token, options)
+  app.signToken = app.context.signToken = function (payload, opts) {
+    return jwt.signToken(payload, opts || options)
+  }
+
+  app.decodeToken = app.context.decodeToken = function (token, opts) {
+    return jwt.decodeToken(token, opts || options)
   }
 
   app.context._toaJsonWebToken = undefined
@@ -43,7 +48,7 @@ module.exports = function toaToken (app, secretOrPrivateKeys, options) {
       if (!token) this.throw(401, 'No authorization token was found')
 
       try {
-        this._toaJsonWebToken = verifyToken(token, options)
+        this._toaJsonWebToken = jwt.verifyToken(token, options)
       } catch (err) {
         this.throw(401, String(err))
       }
@@ -51,18 +56,32 @@ module.exports = function toaToken (app, secretOrPrivateKeys, options) {
       return this._toaJsonWebToken
     }
   })
-
-  function verifyToken (token, options) {
-    var error = null
-    for (var i = 0, len = secretOrPrivateKeys.length - 1; i <= len; i++) {
-      try {
-        return jwt.verify(token, secretOrPrivateKeys[i], options)
-      } catch (err) {
-        error = err
-      }
-    }
-    throw error
-  }
 }
 
-module.exports.jwt = jwt
+function JWT (secretOrPrivateKeys) {
+  if (!secretOrPrivateKeys || !secretOrPrivateKeys.length) throw new Error('secretOrPrivateKey should be set')
+  if (!Array.isArray(secretOrPrivateKeys)) secretOrPrivateKeys = [secretOrPrivateKeys]
+  this.secretOrPrivateKeys = secretOrPrivateKeys
+}
+
+JWT.prototype.signToken = function (payload, options) {
+  return jsonwebtoken.sign(payload, this.secretOrPrivateKeys[0], options)
+}
+
+JWT.prototype.decodeToken = function (token, options) {
+  return jsonwebtoken.decode(token, options)
+}
+
+JWT.prototype.verifyToken = function (token, options) {
+  var error = null
+  var secretOrPrivateKeys = this.secretOrPrivateKeys
+
+  for (var i = 0, len = secretOrPrivateKeys.length - 1; i <= len; i++) {
+    try {
+      return jsonwebtoken.verify(token, secretOrPrivateKeys[i], options)
+    } catch (err) {
+      error = err
+    }
+  }
+  throw error
+}

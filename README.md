@@ -64,6 +64,7 @@ npm install toa-token
 ```js
 var toaToken = require('toa-token')
 ```
+
 ### toaToken(app, secretOrPrivateKeys, [options]))
 
 - `secretOrPrivateKeys`: `secretOrPrivateKeys` is a array of string or buffer containing either the secret for HMAC algorithms, or the PEM encoded private key for RSA and ECDSA.
@@ -105,6 +106,22 @@ Returns the decoded payload without verifying if the signature is valid.
 Returns the decoded payload with verifying if the signature is valid.
 
 - `token`: `String`, the JsonWebToken string.
+
+### toaToken.jwt
+
+It is a reference of `jsonwebtoken` module.
+
+### toaToken.JWT(secretOrPrivateKeys)
+
+It is a wrap of `jsonwebtoken` module.
+
+```js
+var jwt = new toaToken.JWT(secretOrPrivateKeys)
+```
+
+#### jwt.signToken(payload, options)
+#### jwt.decodeToken(token, options)
+#### jwt.verifyToken(token, options)
 
 ## Licences
 (The MIT License)
