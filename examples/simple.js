@@ -31,7 +31,7 @@ var app = Toa(function * () {
 
 toaBody(app)
 toaToken(app, 'secretKeyxxx', {
-  expiresInMinutes: 60
+  expiresIn: 60
 })
 
 app.listen(3000)

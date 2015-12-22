@@ -47,7 +47,7 @@ var app = Toa(function * () {
 
 toaBody(app)
 toaToken(app, 'secretKeyxxx', {
-  expiresInMinutes: 60
+  expiresIn: 60
 })
 
 app.listen(3000)
@@ -73,7 +73,7 @@ var toaToken = require('toa-token')
 - `options.useProperty`: `String`, token name add to `context`, default to `token`.
 - `options.getToken`: `Function`, A custom function for extracting the token, This is useful if you need to pass the token through a query parameter or a cookie.
 - `options.algorithm`
-- `options.expiresInMinutes`
+- `options.expiresIn`
 - `options.audience`
 - `options.subject`
 - `options.issuer`
