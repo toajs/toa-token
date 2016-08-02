@@ -6,6 +6,7 @@ It sign and verify token through a rotating credential system, in which new serv
 
 [![NPM version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
+[![Downloads][downloads-image]][downloads-url]
 
 ## [toa](https://github.com/toajs/toa)
 
@@ -72,12 +73,15 @@ var toaToken = require('toa-token')
 - `options.authScheme`: `String`, Authorization scheme name, default to `Bearer`. In HTTP header fields: `Authorization: Bearer QWxhZGRpbjpvcGVuIHNld2FtZQ==`.
 - `options.useProperty`: `String`, token name add to `context`, default to `token`.
 - `options.getToken`: `Function`, A custom function for extracting the token, This is useful if you need to pass the token through a query parameter or a cookie.
-- `options.algorithm`
-- `options.expiresIn`
+- `options.algorithm` (default: `HS256`)
+- `options.expiresIn`: expressed in seconds or a string describing a time span [rauchg/ms](https://github.com/rauchg/ms.js). Eg: `60`, `"2 days"`, `"10h"`, `"7d"`
+- `options.notBefore`: expressed in seconds or a string describing a time span [rauchg/ms](https://github.com/rauchg/ms.js). Eg: `60`, `"2 days"`, `"10h"`, `"7d"`
 - `options.audience`
-- `options.subject`
 - `options.issuer`
+- `options.jwtid`
+- `options.subject`
 - `options.noTimestamp`
+- `options.header`
 
 **More options is same as [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)**
 
@@ -131,3 +135,6 @@ var jwt = new toaToken.JWT(secretOrPrivateKeys)
 
 [travis-url]: https://travis-ci.org/toajs/toa-token
 [travis-image]: http://img.shields.io/travis/toajs/toa-token.svg
+
+[downloads-url]: https://npmjs.org/package/toa-token
+[downloads-image]: http://img.shields.io/npm/dm/toa-token.svg?style=flat-square

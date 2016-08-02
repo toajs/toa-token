@@ -10,18 +10,25 @@ var request = require('supertest')
 var Toa = require('toa')
 var toaToken = require('../')
 
+function assertContains (src, dst) {
+  var keys = Object.keys(dst)
+  for (var i = 0; i < keys.length; i++) {
+    assert.strictEqual(src[keys[i]], dst[keys[i]])
+  }
+}
+
 describe('toa-token', function () {
   it('should verify token success', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
-      assert.deepEqual(this.token, user)
+      assertContains(this.token, user)
       this.body = token
     })
     toaToken(app, 'secretKeyxxx')
     var token = app.signToken(user)
 
-    assert.deepEqual(app.decodeToken(token), user)
+    assertContains(app.decodeToken(token), user)
 
     return request(app.listen())
       .get('/')
@@ -33,7 +40,7 @@ describe('toa-token', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
-      assert.deepEqual(this.token, user)
+      assertContains(this.token, user)
       this.body = token
     })
 
@@ -56,7 +63,7 @@ describe('toa-token', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
-      assert.deepEqual(this.user, user)
+      assertContains(this.user, user)
       this.body = this.user
     })
     toaToken(app, 'secretKeyxxx', {
@@ -75,7 +82,7 @@ describe('toa-token', function () {
 
     var app = Toa(function () {
       this._token = token
-      assert.deepEqual(this.token, user)
+      assertContains(this.token, user)
       this.body = this.token
     })
     toaToken(app, 'secretKeyxxx', {
@@ -96,7 +103,7 @@ describe('toa-token', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
-      assert.deepEqual(this.token, user)
+      assertContains(this.token, user)
       this.body = this.token
     })
 
@@ -115,7 +122,7 @@ describe('toa-token', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
-      assert.deepEqual(this.token, user)
+      assertContains(this.token, user)
       this.body = this.token
     })
 
@@ -132,7 +139,7 @@ describe('toa-token', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
-      assert.deepEqual(this.token, user)
+      assertContains(this.token, user)
       this.body = this.token
     })
 
@@ -177,7 +184,7 @@ describe('toa-token', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
-      assert.deepEqual(this.token, user)
+      assertContains(this.token, user)
       this.body = token
     })
 

@@ -4,6 +4,8 @@
 // **License:** MIT
 
 var jsonwebtoken = require('jsonwebtoken')
+var JWT_OPTIONS = ['algorithm', 'expiresIn', 'notBefore', 'audience', 'issuer',
+  'jwtid', 'subject', 'noTimestamp', 'header']
 
 module.exports = toaToken
 module.exports.jwt = jsonwebtoken
@@ -18,16 +20,24 @@ function toaToken (app, secretOrPrivateKeys, options) {
   var getToken = typeof options.getToken === 'function' ? options.getToken : null
   var authReg = new RegExp('^' + authScheme.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
 
+  if (options.expiresInMinutes && !options.expiresIn) {
+    options.expiresIn = options.expiresInMinutes * 60
+  }
+  var jwtOptions = {}
+  JWT_OPTIONS.forEach(function (key) {
+    if (options[key] != null) jwtOptions[key] = options[key]
+  })
+
   app.verifyToken = app.context.verifyToken = function (payload, opts) {
-    return jwt.verifyToken(payload, opts || options)
+    return jwt.verifyToken(payload, opts || jwtOptions)
   }
 
   app.signToken = app.context.signToken = function (payload, opts) {
-    return jwt.signToken(payload, opts || options)
+    return jwt.signToken(payload, opts || jwtOptions)
   }
 
   app.decodeToken = app.context.decodeToken = function (token, opts) {
-    return jwt.decodeToken(token, opts || options)
+    return jwt.decodeToken(token, opts || jwtOptions)
   }
 
   app.context._toaJsonWebToken = undefined
@@ -48,7 +58,7 @@ function toaToken (app, secretOrPrivateKeys, options) {
       if (!token) this.throw(401, 'No authorization token was found')
 
       try {
-        this._toaJsonWebToken = jwt.verifyToken(token, options)
+        this._toaJsonWebToken = jwt.verifyToken(token, jwtOptions)
       } catch (err) {
         this.throw(401, String(err))
       }
