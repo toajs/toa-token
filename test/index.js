@@ -3,8 +3,7 @@
 //
 // **License:** MIT
 
-/*global describe, it*/
-
+var tman = require('tman')
 var assert = require('assert')
 var request = require('supertest')
 var Toa = require('toa')
@@ -17,8 +16,8 @@ function assertContains (src, dst) {
   }
 }
 
-describe('toa-token', function () {
-  it('should verify token success', function () {
+tman.suite('toa-token', function () {
+  tman.it('should verify token success', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -36,7 +35,7 @@ describe('toa-token', function () {
       .expect(token)
   })
 
-  it('should verify token success with options', function () {
+  tman.it('should verify token success with options', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -59,7 +58,7 @@ describe('toa-token', function () {
       .expect(token)
   })
 
-  it('should verify token success with options.useProperty', function () {
+  tman.it('should verify token success with options.useProperty', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -77,7 +76,7 @@ describe('toa-token', function () {
       .expect(200)
   })
 
-  it('should verify token success with options.getToken', function () {
+  tman.it('should verify token success with options.getToken', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -99,7 +98,7 @@ describe('toa-token', function () {
       .expect(200)
   })
 
-  it('should verify token success with options.authScheme', function () {
+  tman.it('should verify token success with options.authScheme', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -118,7 +117,7 @@ describe('toa-token', function () {
       .expect(200)
   })
 
-  it('should verify token success through a rotating credential system', function () {
+  tman.it('should verify token success through a rotating credential system', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -135,7 +134,7 @@ describe('toa-token', function () {
       .expect(200)
   })
 
-  it('should verify old token success through a rotating credential system', function () {
+  tman.it('should verify old token success through a rotating credential system', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -152,7 +151,7 @@ describe('toa-token', function () {
       .expect(200)
   })
 
-  it('should verify invalid token fail through a rotating credential system', function () {
+  tman.it('should verify invalid token fail through a rotating credential system', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
@@ -168,7 +167,7 @@ describe('toa-token', function () {
       .expect(401)
   })
 
-  it('should throw error with 401', function () {
+  tman.it('should throw error with 401', function () {
     var app = Toa(function () {
       this.body = this.token
     })
@@ -180,7 +179,7 @@ describe('toa-token', function () {
       .expect(401)
   })
 
-  it('should throw error with 403', function () {
+  tman.it('should throw error with 403', function () {
     var user = {_id: 123, name: 'toa'}
 
     var app = Toa(function () {
