@@ -2,18 +2,18 @@
 // **Github:** https://github.com/toajs/toa-token
 //
 // **License:** MIT
-var Toa = require('toa')
-var toaToken = require('toa-token')
-var Router = require('toa-router')
-var toaBody = require('toa-body')
+const Toa = require('toa')
+const toaToken = require('toa-token')
+const Router = require('toa-router')
+const toaBody = require('toa-body')
 
-var router = new Router()
+const router = new Router()
 
 router
   .get('/auth', function * () {
-    var user = yield this.parseBody()
+    let user = yield this.parseBody()
     // verify with user.name and user.passwd, get user._id
-    var token = this.signToken({
+    let token = this.signToken({
       name: user.name,
       _id: user._id
     })
@@ -25,9 +25,8 @@ router
     // ....
   })
 
-var app = Toa(function * () {
-  yield router.route(this)
-})
+const app = new Toa()
+app.use(router)
 
 toaBody(app)
 toaToken(app, 'secretKeyxxx', {

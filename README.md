@@ -1,5 +1,5 @@
-toa-token
-====
+# toa-token
+
 Json web token (JWT) module for toa.
 
 It sign and verify token through a rotating credential system, in which new server keys can be added and old ones removed regularly, without invalidating client credentials.
@@ -19,18 +19,18 @@ often issued using OpenID Connect.
 ## Demo
 
 ```js
-var Toa = require('toa')
-var toaToken = require('toa-token')
-var Router = require('toa-router')
-var toaBody = require('toa-body')
+const Toa = require('toa')
+const toaToken = require('toa-token')
+const Router = require('toa-router')
+const toaBody = require('toa-body')
 
-var router = new Router()
+const router = new Router()
 
 router
   .get('/auth', function * () {
-    var user = yield this.parseBody()
+    let user = yield this.parseBody()
     // verify with user.name and user.passwd, get user._id
-    var token = this.signToken({
+    let token = this.signToken({
       name: user.name,
       _id: user._id
     })
@@ -42,7 +42,7 @@ router
     // ....
   })
 
-var app = Toa(function * () {
+const app = Toa(function * () {
   yield router.route(this)
 })
 
@@ -63,7 +63,7 @@ npm install toa-token
 ## API
 
 ```js
-var toaToken = require('toa-token')
+const toaToken = require('toa-token')
 ```
 
 ### toaToken(app, secretOrPrivateKeys, [options]))
@@ -120,14 +120,17 @@ It is a reference of `jsonwebtoken` module.
 It is a wrap of `jsonwebtoken` module.
 
 ```js
-var jwt = new toaToken.JWT(secretOrPrivateKeys)
+const jwt = new toaToken.JWT(secretOrPrivateKeys)
 ```
 
 #### jwt.signToken(payload, options)
+
 #### jwt.decodeToken(token, options)
+
 #### jwt.verifyToken(token, options)
 
 ## Licences
+
 (The MIT License)
 
 [npm-url]: https://npmjs.org/package/toa-token

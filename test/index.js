@@ -3,29 +3,30 @@
 //
 // **License:** MIT
 
-var tman = require('tman')
-var assert = require('assert')
-var request = require('supertest')
-var Toa = require('toa')
-var toaToken = require('../')
+const tman = require('tman')
+const assert = require('assert')
+const request = require('supertest')
+const Toa = require('toa')
+const toaToken = require('../')
 
 function assertContains (src, dst) {
-  var keys = Object.keys(dst)
-  for (var i = 0; i < keys.length; i++) {
+  let keys = Object.keys(dst)
+  for (let i = 0; i < keys.length; i++) {
     assert.strictEqual(src[keys[i]], dst[keys[i]])
   }
 }
 
 tman.suite('toa-token', function () {
   tman.it('should verify token success', function () {
-    var user = {_id: 123, name: 'toa'}
+    const user = {_id: 123, name: 'toa'}
 
-    var app = Toa(function () {
+    const app = new Toa()
+    app.use(function () {
       assertContains(this.token, user)
       this.body = token
     })
     toaToken(app, 'secretKeyxxx')
-    var token = app.signToken(user)
+    const token = app.signToken(user)
 
     assertContains(app.decodeToken(token), user)
 
@@ -36,9 +37,10 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify token success with options', function () {
-    var user = {_id: 123, name: 'toa'}
+    const user = {_id: 123, name: 'toa'}
 
-    var app = Toa(function () {
+    const app = new Toa()
+    app.use(function () {
       assertContains(this.token, user)
       this.body = token
     })
@@ -50,7 +52,7 @@ tman.suite('toa-token', function () {
       issuer: 'efg'
     })
 
-    var token = app.signToken(user)
+    const token = app.signToken(user)
 
     return request(app.listen())
       .get('/')
@@ -59,16 +61,17 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify token success with options.useProperty', function () {
-    var user = {_id: 123, name: 'toa'}
+    const user = {_id: 123, name: 'toa'}
 
-    var app = Toa(function () {
+    const app = new Toa()
+    app.use(function () {
       assertContains(this.user, user)
       this.body = this.user
     })
     toaToken(app, 'secretKeyxxx', {
       useProperty: 'user'
     })
-    var token = app.signToken(user)
+    const token = app.signToken(user)
 
     return request(app.listen())
       .get('/')
@@ -77,9 +80,10 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify token success with options.getToken', function () {
-    var user = {_id: 123, name: 'toa'}
+    const user = {_id: 123, name: 'toa'}
 
-    var app = Toa(function () {
+    const app = new Toa()
+    app.use(function () {
       this._token = token
       assertContains(this.token, user)
       this.body = this.token
@@ -90,7 +94,7 @@ tman.suite('toa-token', function () {
         return this._token
       }
     })
-    var token = app.signToken(user)
+    const token = app.signToken(user)
 
     return request(app.listen())
       .get('/')
@@ -99,9 +103,10 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify token success with options.authScheme', function () {
-    var user = {_id: 123, name: 'toa'}
+    const user = {_id: 123, name: 'toa'}
 
-    var app = Toa(function () {
+    const app = new Toa()
+    app.use(function () {
       assertContains(this.token, user)
       this.body = this.token
     })
@@ -109,7 +114,7 @@ tman.suite('toa-token', function () {
     toaToken(app, 'secretKeyxxx', {
       authScheme: 'Basic'
     })
-    var token = app.signToken(user)
+    const token = app.signToken(user)
 
     return request(app.listen())
       .get('/')
@@ -118,15 +123,16 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify token success through a rotating credential system', function () {
-    var user = {_id: 123, name: 'toa'}
+    const user = {_id: 123, name: 'toa'}
 
-    var app = Toa(function () {
+    const app = new Toa()
+    app.use(function () {
       assertContains(this.token, user)
       this.body = this.token
     })
 
     toaToken(app, ['secretKeyA', 'secretKeyB', 'secretKeyC'])
-    var token = app.signToken(user)
+    const token = app.signToken(user)
 
     return request(app.listen())
       .get('/')
@@ -135,15 +141,16 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify old token success through a rotating credential system', function () {
-    var user = {_id: 123, name: 'toa'}
+    const user = {_id: 123, name: 'toa'}
 
-    var app = Toa(function () {
+    const app = new Toa()
+    app.use(function () {
       assertContains(this.token, user)
       this.body = this.token
     })
 
     toaToken(app, ['secretKeyA', 'secretKeyB', 'secretKeyC'])
-    var token = toaToken.jwt.sign(user, 'secretKeyC')
+    const token = toaToken.jwt.sign(user, 'secretKeyC')
 
     return request(app.listen())
       .get('/')
@@ -152,14 +159,15 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify invalid token fail through a rotating credential system', function () {
-    var user = {_id: 123, name: 'toa'}
+    const user = {_id: 123, name: 'toa'}
 
-    var app = Toa(function () {
+    const app = new Toa()
+    app.use(function () {
       this.body = this.token
     })
 
     toaToken(app, ['secretKeyA', 'secretKeyB', 'secretKeyC'])
-    var token = toaToken.jwt.sign(user, 'secretKeyD')
+    const token = toaToken.jwt.sign(user, 'secretKeyD')
 
     return request(app.listen())
       .get('/')
@@ -168,7 +176,8 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should throw error with 401', function () {
-    var app = Toa(function () {
+    const app = new Toa()
+    app.use(function () {
       this.body = this.token
     })
 
@@ -180,16 +189,17 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should throw error with 403', function () {
-    var user = {_id: 123, name: 'toa'}
+    const user = {_id: 123, name: 'toa'}
 
-    var app = Toa(function () {
+    const app = new Toa()
+    app.use(function () {
       assertContains(this.token, user)
       this.body = token
     })
 
     toaToken(app, 'secretKeyxxx')
 
-    var token = app.signToken(user)
+    const token = app.signToken(user)
 
     return request(app.listen())
       .get('/')

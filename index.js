@@ -3,27 +3,27 @@
 //
 // **License:** MIT
 
-var jsonwebtoken = require('jsonwebtoken')
-var JWT_OPTIONS = ['algorithm', 'expiresIn', 'notBefore', 'audience', 'issuer',
+const jsonwebtoken = require('jsonwebtoken')
+const JWT_OPTIONS = ['algorithm', 'expiresIn', 'notBefore', 'audience', 'issuer',
   'jwtid', 'subject', 'noTimestamp', 'header']
 
 module.exports = toaToken
-module.exports.jwt = jsonwebtoken
-module.exports.JWT = JWT
+toaToken.jwt = jsonwebtoken
+toaToken.JWT = JWT
 
 function toaToken (app, secretOrPrivateKeys, options) {
   options = options || {}
 
-  var jwt = new JWT(secretOrPrivateKeys)
-  var useProperty = options.useProperty || 'token'
-  var authScheme = options.authScheme || 'Bearer'
-  var getToken = typeof options.getToken === 'function' ? options.getToken : null
-  var authReg = new RegExp('^' + authScheme.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+  const jwt = new JWT(secretOrPrivateKeys)
+  const useProperty = options.useProperty || 'token'
+  const authScheme = options.authScheme || 'Bearer'
+  const getToken = typeof options.getToken === 'function' ? options.getToken : null
+  const authReg = new RegExp('^' + authScheme.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
 
   if (options.expiresInMinutes && !options.expiresIn) {
     options.expiresIn = options.expiresInMinutes * 60
   }
-  var jwtOptions = {}
+  const jwtOptions = {}
   JWT_OPTIONS.forEach(function (key) {
     if (options[key] != null) jwtOptions[key] = options[key]
   })
@@ -47,8 +47,8 @@ function toaToken (app, secretOrPrivateKeys, options) {
     get: function () {
       if (this._toaJsonWebToken) return this._toaJsonWebToken
 
-      var token
-      var authorization = this.get('authorization')
+      let token
+      let authorization = this.get('authorization')
 
       if (getToken) token = getToken.call(this)
       if (!token && authorization) {
@@ -83,10 +83,10 @@ JWT.prototype.decodeToken = function (token, options) {
 }
 
 JWT.prototype.verifyToken = function (token, options) {
-  var error = null
-  var secretOrPrivateKeys = this.secretOrPrivateKeys
+  let error = null
+  let secretOrPrivateKeys = this.secretOrPrivateKeys
 
-  for (var i = 0, len = secretOrPrivateKeys.length - 1; i <= len; i++) {
+  for (let i = 0, len = secretOrPrivateKeys.length - 1; i <= len; i++) {
     try {
       return jsonwebtoken.verify(token, secretOrPrivateKeys[i], options)
     } catch (err) {

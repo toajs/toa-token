@@ -4,14 +4,14 @@
   "authors": [
     "Yan Qing <admin@zensh.com>"
   ],
-  "version": "2.1.1",
+  "version": "2.2.0",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git@github.com:toajs/toa-token.git"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">= 4.5.0"
   },
   "homepage": "https://github.com/toajs/toa-token",
   "keywords": [
@@ -29,13 +29,13 @@
     "oauth"
   ],
   "dependencies": {
-    "jsonwebtoken": "^7.1.9"
+    "jsonwebtoken": "^7.4.1"
   },
   "devDependencies": {
-    "standard": "^8.2.0",
-    "supertest": "^2.0.0",
-    "tman": "^1.6.0",
-    "toa": "^1.8.13"
+    "standard": "^10.0.2",
+    "supertest": "^3.0.0",
+    "tman": "^1.6.9",
+    "toa": "^2.6.8"
   },
   "scripts": {
     "test": "standard && tman"
