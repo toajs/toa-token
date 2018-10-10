@@ -48,7 +48,7 @@ function toaToken (app, secretOrPrivateKeys, options) {
       if (this._toaJsonWebToken) return this._toaJsonWebToken
 
       let token
-      let authorization = this.get('authorization')
+      const authorization = this.get('authorization')
 
       if (getToken) token = getToken.call(this)
       if (!token && authorization) {
@@ -84,7 +84,7 @@ JWT.prototype.decodeToken = function (token, options) {
 
 JWT.prototype.verifyToken = function (token, options) {
   let error = null
-  let secretOrPrivateKeys = this.secretOrPrivateKeys
+  const secretOrPrivateKeys = this.secretOrPrivateKeys
 
   for (let i = 0, len = secretOrPrivateKeys.length - 1; i <= len; i++) {
     try {

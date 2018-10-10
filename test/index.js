@@ -10,7 +10,7 @@ const Toa = require('toa')
 const toaToken = require('../')
 
 function assertContains (src, dst) {
-  let keys = Object.keys(dst)
+  const keys = Object.keys(dst)
   for (let i = 0; i < keys.length; i++) {
     assert.strictEqual(src[keys[i]], dst[keys[i]])
   }

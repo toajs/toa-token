@@ -11,9 +11,9 @@ const router = new Router()
 
 router
   .get('/auth', function * () {
-    let user = yield this.parseBody()
+    const user = yield this.parseBody()
     // verify with user.name and user.passwd, get user._id
-    let token = this.signToken({
+    const token = this.signToken({
       name: user.name,
       _id: user._id
     })
