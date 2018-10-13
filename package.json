@@ -4,7 +4,7 @@
   "authors": [
     "Yan Qing <admin@zensh.com>"
   ],
-  "version": "2.3.0",
+  "version": "2.3.1",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -29,13 +29,13 @@
     "oauth"
   ],
   "dependencies": {
-    "jsonwebtoken": "^8.0.1"
+    "jsonwebtoken": "^8.3.0"
   },
   "devDependencies": {
-    "standard": "^10.0.3",
-    "supertest": "^3.0.0",
-    "tman": "^1.7.2",
-    "toa": "^3.0.7"
+    "standard": "^12.0.1",
+    "supertest": "^3.3.0",
+    "tman": "^1.8.1",
+    "toa": "^3.2.2"
   },
   "scripts": {
     "test": "standard && tman"

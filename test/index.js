@@ -18,7 +18,7 @@ function assertContains (src, dst) {
 
 tman.suite('toa-token', function () {
   tman.it('should verify token success', function () {
-    const user = {_id: 123, name: 'toa'}
+    const user = { _id: 123, name: 'toa' }
 
     const app = new Toa()
     app.use(function () {
@@ -37,7 +37,7 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify token success with options', function () {
-    const user = {_id: 123, name: 'toa'}
+    const user = { _id: 123, name: 'toa' }
 
     const app = new Toa()
     app.use(function () {
@@ -61,7 +61,7 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify token success with options.useProperty', function () {
-    const user = {_id: 123, name: 'toa'}
+    const user = { _id: 123, name: 'toa' }
 
     const app = new Toa()
     app.use(function () {
@@ -80,7 +80,7 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify token success with options.getToken', function () {
-    const user = {_id: 123, name: 'toa'}
+    const user = { _id: 123, name: 'toa' }
 
     const app = new Toa()
     app.use(function () {
@@ -103,7 +103,7 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify token success with options.authScheme', function () {
-    const user = {_id: 123, name: 'toa'}
+    const user = { _id: 123, name: 'toa' }
 
     const app = new Toa()
     app.use(function () {
@@ -123,7 +123,7 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify token success through a rotating credential system', function () {
-    const user = {_id: 123, name: 'toa'}
+    const user = { _id: 123, name: 'toa' }
 
     const app = new Toa()
     app.use(function () {
@@ -141,7 +141,7 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify old token success through a rotating credential system', function () {
-    const user = {_id: 123, name: 'toa'}
+    const user = { _id: 123, name: 'toa' }
 
     const app = new Toa()
     app.use(function () {
@@ -159,7 +159,7 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should verify invalid token fail through a rotating credential system', function () {
-    const user = {_id: 123, name: 'toa'}
+    const user = { _id: 123, name: 'toa' }
 
     const app = new Toa()
     app.use(function () {
@@ -189,7 +189,7 @@ tman.suite('toa-token', function () {
   })
 
   tman.it('should throw error with 403', function () {
-    const user = {_id: 123, name: 'toa'}
+    const user = { _id: 123, name: 'toa' }
 
     const app = new Toa()
     app.use(function () {
